@@ -1,9 +1,9 @@
 name: Flask-CI-CD-Pipeline
 
 on:
- push:
-    branches: 
-      Mayank-CICD-Assignment1
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -21,6 +21,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Tests
+        run: pip install --upgrade Flask werkzeug
         run: python -m unittest discover -s tests -p "test_*.py"
 
   docker:
