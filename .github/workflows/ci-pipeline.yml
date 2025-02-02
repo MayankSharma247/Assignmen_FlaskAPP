@@ -1,0 +1,46 @@
+name: Flask-CI-CD-Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Tests
+        run: python -m unittest discover -s tests
+
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: docker build -t my-flask-app .
+
+      - name: Run Docker Container
+        run: docker run -d -p 5001:5001 --name flask-container my-flask-app
+
+      - name: Show Running Containers
+        run: docker ps -a
+
+      - name: Stop and Remove Container
+        run: |
+          docker stop flask-container
+          docker rm flask-container
+
