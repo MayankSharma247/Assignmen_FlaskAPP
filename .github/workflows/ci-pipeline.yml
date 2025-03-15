@@ -1,8 +1,8 @@
 name: Flask-CI-CD-Pipeline
 
 on:
-  pull_request:
-    branches:
+  pull:
+    branches: 
       - main
 
 jobs:
@@ -21,7 +21,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Tests
-        run: python -m unittest discover -s tests
+        run: |
+          pip install --upgrade Flask werkzeug
+          python -m unittest discover -s tests -p "test_*.py"
 
   docker:
     needs: build
@@ -43,4 +45,3 @@ jobs:
         run: |
           docker stop flask-container
           docker rm flask-container
-
