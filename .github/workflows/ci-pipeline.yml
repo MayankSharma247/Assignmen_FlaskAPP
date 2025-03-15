@@ -1,9 +1,9 @@
 name: Flask-CI-CD-Pipeline
 
 on:
-  push:
+  pull:
     branches: 
-      - Mayank-CICD-Assignment1
+      - main
 
 jobs:
   build:
